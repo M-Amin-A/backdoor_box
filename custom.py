@@ -6,6 +6,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset
 import torchvision
 from torchvision.transforms import Compose, ToTensor, PILToTensor, RandomHorizontalFlip
+import torchvision.transforms as transforms
 
 import core
 
