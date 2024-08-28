@@ -33,7 +33,7 @@ badnets = core.BadNets(
     model=core.models.PreActResNet18(),
     # model=core.models.BaselineMNISTNetwork(),
     loss=nn.CrossEntropyLoss(),
-    y_target=1,
+    y_target=0,
     poisoned_rate=0.05,
     pattern=pattern,
     weight=weight,
@@ -53,13 +53,13 @@ schedule = {
 
     'benign_training': False,
     'batch_size': 128,
-    'num_workers': 16,
+    'num_workers': 1,
 
-    'lr': 0.1,
+    'lr': 0.003,
     'momentum': 0.9,
     'weight_decay': 5e-4,
-    'gamma': 0.1,
-    'schedule': [150, 180],
+    # 'gamma': 0.1,
+    # 'schedule': [150, 180],
 
     'epochs': 50,
 
