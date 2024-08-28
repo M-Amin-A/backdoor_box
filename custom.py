@@ -56,6 +56,8 @@ schedule = {
     'gamma': 0.1,
     'schedule': [100],
 
+    'lr_atk': 0.003,
+
     'epochs': 50,
 
     'log_iteration_interval': 300,
