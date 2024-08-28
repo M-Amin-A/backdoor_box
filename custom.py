@@ -9,33 +9,17 @@ from torchvision.transforms import Compose, ToTensor, PILToTensor, RandomHorizon
 
 import core
 
-
-dataset = torchvision.datasets.DatasetFolder
-
-# image file -> cv.imread -> numpy.ndarray (H x W x C) -> ToTensor -> torch.Tensor (C x H x W) -> RandomHorizontalFlip -> torch.Tensor -> network input
 transform_train = Compose([
     ToTensor(),
+    transforms.RandomRotation(10),
     RandomHorizontalFlip()
 ])
-trainset = dataset(
-    root='./data/cifar10/train',
-    loader=cv2.imread,
-    extensions=('png',),
-    transform=transform_train,
-    target_transform=None,
-    is_valid_file=None)
-
 transform_test = Compose([
     ToTensor()
 ])
-testset = dataset(
-    root='./data/cifar10/test',
-    loader=cv2.imread,
-    extensions=('png',),
-    transform=transform_train,
-    target_transform=None,
-    is_valid_file=None)
 
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True)
+testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True)
 
 pattern = torch.zeros((1, 32, 32), dtype=torch.uint8)
 pattern[0, -3:, -3:] = 255
@@ -45,7 +29,7 @@ weight[0, -3:, -3:] = 1.0
 badnets = core.BadNets(
     train_dataset=trainset,
     test_dataset=testset,
-    model=core.models.ResNet(18),
+    model=core.models.PreActResNet18(),
     # model=core.models.BaselineMNISTNetwork(),
     loss=nn.CrossEntropyLoss(),
     y_target=1,
@@ -83,7 +67,7 @@ schedule = {
     'save_epoch_interval': 10,
 
     'save_dir': 'experiments',
-    'experiment_name': 'train_poisoned_DatasetFolder-CIFAR10'
+    'experiment_name': 'train_poisoned_CIFAR10'
 }
 
 badnets.train(schedule)
