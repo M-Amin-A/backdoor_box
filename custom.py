@@ -23,6 +23,7 @@ trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True
 testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
 
 badnets = core.LIRA(
+    dataset_name='cifar10',
     train_dataset=trainset,
     test_dataset=testset,
     model=core.models.PreActResNet18(),
