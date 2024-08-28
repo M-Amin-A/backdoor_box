@@ -19,8 +19,8 @@ transform_test = Compose([
     ToTensor()
 ])
 
-trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True)
-testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True)
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
+testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
 
 pattern = torch.zeros((1, 32, 32), dtype=torch.uint8)
 pattern[0, -3:, -3:] = 255
