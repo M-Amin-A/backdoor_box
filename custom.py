@@ -63,7 +63,7 @@ schedule = {
 
     'epochs': 50,
 
-    'log_iteration_interval': 100,
+    'log_iteration_interval': 300,
     'test_epoch_interval': 10,
     'save_epoch_interval': 10,
 
