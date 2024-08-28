@@ -59,8 +59,10 @@ schedule = {
     'tune_test_lr': 0.01,
     'tune_momentum': 0.9,
     'tune_weight_decay': 5e-4,
-    'tune_test_epochs': 500,
-    'schedulerC_milestones': '100,200,300,400',
+    # 'tune_test_epochs': 500,
+    # 'schedulerC_milestones': '100,200,300,400',
+    'tune_test_epochs': 50,
+    'schedulerC_milestones': '10,20,30,40',
     'schedulerC_lambda': 0.1,
 
     'lr_atk': 0.003,
