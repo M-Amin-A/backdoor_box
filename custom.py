@@ -78,6 +78,4 @@ schedule = {
     'experiment_name': 'train_poisoned_CIFAR10'
 }
 
-# --clsmodel vgg11
-
 poison_class.train(schedule)

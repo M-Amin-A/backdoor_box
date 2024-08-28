@@ -24,6 +24,8 @@ from torchvision import transforms
 from ..utils import Log
 from .base import *
 
+from core.models.preact import PreActResNet18
+
 
 class MNISTBlock(nn.Module):
     def __init__(self, in_planes, planes, stride=1):
@@ -413,7 +415,8 @@ class LIRA(Base):
             return create_mnist
         elif self.dataset_name == 'cifar10':
             def create_cifar():
-                return VGG('VGG11', num_classes=10) # core.models.vgg11(num_classes=10) #core.models.ResNet(18)
+                # return VGG('VGG11', num_classes=10) # core.models.vgg11(num_classes=10) #core.models.ResNet(18)
+                return PreActResNet18()
             return create_cifar
         elif self.dataset_name == 'gtsrb':
             def create_gtsrb():
