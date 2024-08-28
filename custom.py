@@ -22,25 +22,19 @@ transform_test = Compose([
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
 testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
 
-pattern = torch.zeros((1, 32, 32), dtype=torch.uint8)
-pattern[0, -3:, -3:] = 255
-weight = torch.zeros((1, 32, 32), dtype=torch.float32)
-weight[0, -3:, -3:] = 1.0
-
-badnets = core.BadNets(
+badnets = core.LIRA(
     train_dataset=trainset,
     test_dataset=testset,
     model=core.models.PreActResNet18(),
-    # model=core.models.BaselineMNISTNetwork(),
     loss=nn.CrossEntropyLoss(),
     y_target=0,
-    poisoned_rate=0.05,
-    pattern=pattern,
-    weight=weight,
-    # poisoned_transform_index=0,
-    poisoned_target_transform_index=0,
+    eps=0.1,
+    alpha=0.5,
+    tune_test_eps=0.1,
+    tune_test_alpha=0.5,
+    best_threshold=0.01,
     schedule=None,
-    seed=666
+    seed=42
 )
 
 poisoned_train_dataset, poisoned_test_dataset = badnets.get_poisoned_dataset()
