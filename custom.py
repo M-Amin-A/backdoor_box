@@ -58,8 +58,8 @@ schedule = {
     'lr': 0.003,
     'momentum': 0.9,
     'weight_decay': 5e-4,
-    # 'gamma': 0.1,
-    # 'schedule': [150, 180],
+    'gamma': 0.1,
+    'schedule': [100],
 
     'epochs': 50,
 
