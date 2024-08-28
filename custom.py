@@ -76,7 +76,7 @@ schedule = {
     'gamma': 0.1,
     'schedule': [150, 180],
 
-    'epochs': 200,
+    'epochs': 50,
 
     'log_iteration_interval': 100,
     'test_epoch_interval': 10,
