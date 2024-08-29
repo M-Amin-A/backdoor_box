@@ -660,6 +660,8 @@ class LIRA(Base):
             self.clear_grad(model)
             paragrads = torch.autograd.grad(loss, model.parameters(),
                                             create_graph=True)
+
+            print('st')
             for i, (layername, layer) in enumerate(model.named_parameters()):
                 modulenames, weightname = \
                     layername.split('.')[:-1], layername.split('.')[-1]
@@ -670,6 +672,7 @@ class LIRA(Base):
                 module._parameters[weightname] = \
                     layer - clsoptimizer.param_groups[0]['lr'] * paragrads[i]        
             tgtoptimizer.zero_grad()
+            print('en')
             
             noise = tgtmodel(data) * self.eps
             atkdata = clip_image(data + noise)
@@ -687,6 +690,7 @@ class LIRA(Base):
             clsoptimizer.zero_grad()
             loss.backward()
             clsoptimizer.step()
+            print('en2')
 
         atkloss = sum(losslist) / len(losslist)
         atkcleanloss = sum(loss_clean_list) / len(loss_clean_list)
