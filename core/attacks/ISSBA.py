@@ -202,7 +202,6 @@ class StegaStampEncoder(nn.Module):
         secret = secret - .5
         image = image - .5
 
-        print(secret.shape)
         secret = self.secret_dense(secret)
         secret = secret.reshape((-1, self.in_channel, self.height, self.width))
         inputs = torch.cat([secret, image], axis=1)

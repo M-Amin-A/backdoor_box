@@ -22,8 +22,9 @@ transform_test = Compose([
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
 testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
 
+secret_size = 20
 encoder_schedule = {
-    'secret_size': 20,
+    'secret_size': secret_size,
     'enc_height': 32,
     'enc_width': 32,
     'enc_in_channel': 3,
@@ -33,11 +34,16 @@ encoder_schedule = {
 
 }
 
+train_steg_set = []
+for image, label in trainset:
+    secret = np.random.binomial(1, .5, secret_size)
+    train_steg_set.append([image, secret])
+
 poison_class = core.ISSBA(
     dataset_name='cifar10',
     train_dataset=trainset,
     test_dataset=testset,
-    train_steg_set=trainset,
+    train_steg_set=train_steg_set,
     model=core.models.PreActResNet18(),
     loss=nn.CrossEntropyLoss(),
     poisoned_rate=0.1,
