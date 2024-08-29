@@ -636,6 +636,7 @@ class LIRA(Base):
         loss_poison_list = []
         loss_tri_list = []
         for batch_idx, (data, target) in enumerate(train_loader):
+            print(batch_idx)
             if post_transforms is not None:
                 data = post_transforms(data)
             
