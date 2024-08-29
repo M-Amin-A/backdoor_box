@@ -36,7 +36,7 @@ encoder_schedule = {
 
 train_steg_set = []
 for image, label in trainset:
-    secret = np.random.binomial(1, .5, secret_size).astype(np.uint8)
+    secret = np.random.binomial(1, .5, secret_size).astype(float)
     train_steg_set.append([image, secret])
 
 poison_class = core.ISSBA(
