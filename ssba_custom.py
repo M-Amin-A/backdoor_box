@@ -23,7 +23,7 @@ trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True
 testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
 
 encoder_schedule = {
-    'secret_size': 5,
+    'secret_size': 20,
     'enc_height': 32,
     'enc_width': 32,
     'enc_in_channel': 3,
