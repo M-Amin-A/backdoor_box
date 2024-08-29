@@ -1,10 +1,3 @@
-'''
-This is the example code of benign training and poisoned training on torchvision.datasets.DatasetFolder.
-Dataset is CIFAR-10.
-Attack method is BadNets.
-'''
-
-
 import os
 
 import cv2
@@ -16,7 +9,6 @@ from torchvision.transforms import Compose, ToTensor, PILToTensor, RandomHorizon
 import torchvision.transforms as transforms
 
 import core
-
 
 transform_train = Compose([
     ToTensor(),
@@ -30,27 +22,32 @@ transform_test = Compose([
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
 testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
 
+encoder_schedule = {
+    'secret_size': 5,
+    'enc_height': 32,
+    'enc_width': 32,
+    'enc_in_channel': 3,
+    'enc_total_epoch': 30,
+    'enc_use_dis': False,
+    'enc_secret_only_epoch': 30
 
-pattern = torch.zeros((1, 32, 32), dtype=torch.uint8)
-pattern[0, -3:, -3:] = 255
-weight = torch.zeros((1, 32, 32), dtype=torch.float32)
-weight[0, -3:, -3:] = 1.0
+}
 
-badnets = core.BadNets(
+poison_class = core.ISSBA(
+    dataset_name='cifar10',
     train_dataset=trainset,
     test_dataset=testset,
-    model=core.models.ResNet(18),
+    train_steg_set=trainset,
+    model=core.models.PreActResNet18(),
     loss=nn.CrossEntropyLoss(),
+    poisoned_rate=0.1,
+    encoder_schedule=encoder_schedule,
     y_target=0,
-    poisoned_rate=0.05,
-    pattern=pattern,
-    weight=weight,
-    poisoned_target_transform_index=0,
     schedule=None,
     seed=42
 )
 
-# poisoned_train_dataset, poisoned_test_dataset = badnets.get_poisoned_dataset()
+poisoned_train_dataset, poisoned_test_dataset = poison_class.get_poisoned_dataset()
 
 # train attacked model
 schedule = {
@@ -60,22 +57,25 @@ schedule = {
 
     'benign_training': False,
     'batch_size': 128,
-    'num_workers': 16,
+    'num_workers': 1,
 
     'lr': 0.01,
+    # 0.001
     'momentum': 0.9,
     'weight_decay': 5e-4,
     'gamma': 0.1,
-    'schedule': [150, 180],
+    'schedule': [100],
+    # 'schedule': [15, 20],
 
     'epochs': 50,
+    # 'epochs': 30,
 
     'log_iteration_interval': 300,
     'test_epoch_interval': 10,
     'save_epoch_interval': 10,
 
     'save_dir': 'experiments',
-    'experiment_name': 'badnet_0'
+    'experiment_name': 'train_poisoned_CIFAR10'
 }
 
-badnets.train(schedule)
+poison_class.train(schedule)
