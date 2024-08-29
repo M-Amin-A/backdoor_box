@@ -636,7 +636,6 @@ class LIRA(Base):
         loss_poison_list = []
         loss_tri_list = []
         for batch_idx, (data, target) in enumerate(train_loader):
-            print(batch_idx)
             if post_transforms is not None:
                 data = post_transforms(data)
             
@@ -671,19 +670,16 @@ class LIRA(Base):
                 module._parameters[weightname] = \
                     layer - clsoptimizer.param_groups[0]['lr'] * paragrads[i]        
             tgtoptimizer.zero_grad()
-            print('phase 1')
-            
+
             noise = tgtmodel(data) * self.eps
             atkdata = clip_image(data + noise)
             tgtloss = self.loss(tmpmodel(atkdata), target_transform(target))
             loss_tri_list.append(tgtloss)
-            print('phase 2')
 
             tgtloss.backward()
             tgtoptimizer.step() # This is the slowest step
 
             # Update the victim model.
-            print('phase 3')
             noise = atkmodel(data) * self.eps
             atkdata = clip_image(data + noise)
             output = model(atkdata)
@@ -691,7 +687,6 @@ class LIRA(Base):
             clsoptimizer.zero_grad()
             loss.backward()
             clsoptimizer.step()
-            print('phase 4')
 
         atkloss = sum(losslist) / len(losslist)
         atkcleanloss = sum(loss_clean_list) / len(loss_clean_list)
