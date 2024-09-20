@@ -63,8 +63,8 @@ torch.save(noise_grid, 'ResNet-18_CIFAR-10_WaNet_noise_grid.pth')
 wanet = core.WaNet(
     train_dataset=trainset,
     test_dataset=testset,
-    # model=core.models.ResNet(18),
-    model=core.models.PreActResNet18(),
+    model=core.models.ResNet(18),
+    # model=core.models.PreActResNet18(),
     # model=core.models.BaselineMNISTNetwork(),
     loss=nn.CrossEntropyLoss(),
     y_target=0,
