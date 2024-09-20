@@ -63,7 +63,8 @@ torch.save(noise_grid, 'ResNet-18_CIFAR-10_WaNet_noise_grid.pth')
 wanet = core.WaNet(
     train_dataset=trainset,
     test_dataset=testset,
-    model=core.models.ResNet(18),
+    # model=core.models.ResNet(18),
+    model=core.models.PreActResNet18(),
     # model=core.models.BaselineMNISTNetwork(),
     loss=nn.CrossEntropyLoss(),
     y_target=0,
@@ -81,7 +82,7 @@ poisoned_train_dataset, poisoned_test_dataset = wanet.get_poisoned_dataset()
 # Train Infected Model
 schedule = {
     'device': 'GPU',
-    'CUDA_VISIBLE_DEVICES': '2',
+    'CUDA_VISIBLE_DEVICES': '1',
     'GPU_num': 1,
 
     'benign_training': False,
@@ -96,9 +97,9 @@ schedule = {
 
     'epochs': 200,
 
-    'log_iteration_interval': 100,
-    'test_epoch_interval': 10,
-    'save_epoch_interval': 10,
+    'log_iteration_interval': 300,
+    'test_epoch_interval': 1,
+    'save_epoch_interval': 1,
 
     'save_dir': 'experiments',
     'experiment_name': 'ResNet-18_CIFAR-10_WaNet'
