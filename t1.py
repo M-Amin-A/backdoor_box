@@ -46,12 +46,12 @@ transform_train = Compose([
     ToTensor(),
     RandomHorizontalFlip()
 ])
-trainset = dataset('../datasets', train=True, transform=transform_train, download=False)
+trainset = dataset('../datasets', train=True, transform=transform_train, download=True)
 
 transform_test = Compose([
     ToTensor()
 ])
-testset = dataset('../datasets', train=False, transform=transform_test, download=False)
+testset = dataset('../datasets', train=False, transform=transform_test, download=True)
 
 
 # Show an Example of Benign Training Samples
